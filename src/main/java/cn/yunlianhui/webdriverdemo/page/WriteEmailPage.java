@@ -31,7 +31,7 @@ public class WriteEmailPage {
 		txtSubject.sendKeys(subject);
 	}
 	public void inputContent(String content) throws Exception{
-		WebDriver driver = TestCaseBase.getDriver();
+		WebDriver driver = new TestCaseBase().getDriver();
 		driver.switchTo().frame(iframeEditor);		
 		txtContent.clear();
 		txtContent.sendKeys(content);

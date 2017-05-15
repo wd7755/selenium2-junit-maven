@@ -1,25 +1,31 @@
 package cn.yunlianhui.webdriverdemo;
 
+import java.io.File;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
+
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
+
 import cn.yunlianhui.webdriverdemo.page.LoginPage;
 import cn.yunlianhui.webdriverdemo.page.MainPage;
 import cn.yunlianhui.webdriverdemo.util.ExcelUtil;
 
 
 public class TestCaseBase {
-	protected static WebDriver driver;
+	protected WebDriver driver;	
 	//定义用例路径
-	protected static String excelPath= "D:\\workspace\\webdriverdemo\\src\\data\\126MailLoginCase.xlsx";
-	public static WebDriver getDriver() throws Exception {	    
-        if (driver == null) {        
+	protected static String excelPath = "";
+	public WebDriver getDriver() throws Exception {	    
+        if (driver == null) {    
             //读取用例sheet页
             ExcelUtil.setExcelFile(excelPath, "login");        
             //打开浏览器
@@ -35,12 +41,25 @@ public class TestCaseBase {
         }       
         return driver;
     }			
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception{
+		 ClassLoader classLoader = TestCaseBase.class.getClassLoader();
+		 URL resource = classLoader.getResource("126MailLoginCase.xlsx");
+		 excelPath = resource.getPath();
+	}
+	   
+    @AfterClass
+    public static void tearDownAfterClass() throws Exception{
+	
+    }
+	
 	/**
 	 * 每个测试方法开始执行前执行该方法：获取driver并利用其打开首页
 	 * @throws Exception 可能抛出异常
 	 */
     @Before
     public void setUp() throws Exception {      
+    	
         driver = getDriver();
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS) ;      
     }	
